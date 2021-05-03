@@ -36,8 +36,9 @@ class _LoginState extends State<Login> {
   }
 
   login() async {
+    // localhost = 10.0.2.2
     final response = await http
-        .post("http://budee.000webhostapp.com/api_verification.php", body: {
+        .post("http://10.0.2.2/budee/api_verification.php", body: {
       "flag": 1.toString(),
       "email": email,
       "password": password,

@@ -1,10 +1,10 @@
-import 'package:bottom_navy_bar/bottom_navy_bar.dart';
+// import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_login/screen/calcScreen.dart';
+// import 'package:flutter_login/screen/calcScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:quick_feedback/quick_feedback.dart';
-import 'multiForm.dart';
 import 'screen/screen1.dart';
+import 'screen/screen2.dart';
+import 'screen/screen3.dart';
 
 class MainMenu extends StatefulWidget {
   final VoidCallback signOut;
@@ -16,6 +16,7 @@ class MainMenu extends StatefulWidget {
 }
 
 class _MainMenuState extends State<MainMenu> {
+  
   signOut() {
     setState(() {
       widget.signOut();
@@ -108,12 +109,12 @@ class _MainMenuState extends State<MainMenu> {
               leading: Icon(Icons.account_circle),
               title: Text('Profile'),
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => MultiForm(),
-                  ),
-                );
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => Screen3(),
+                //   ),
+                // );
               },
             ),
             ListTile(
@@ -123,7 +124,7 @@ class _MainMenuState extends State<MainMenu> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => CalcScreen1(),
+                    builder: (context) => CalcForm1(),
                   ),
                 );
               },
@@ -135,14 +136,14 @@ class _MainMenuState extends State<MainMenu> {
             ListTile(
               leading: Icon(Icons.access_time),
               title: Text('History'),
-              // onTap: () {
-              //   Navigator.push(
-              //     context,
-              //     MaterialPageRoute(
-              //       builder: (context) => CalcScreen1(),
-              //     ),
-              //   );
-              // },
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CalcForm1(),
+                  ),
+                );
+              },
             ),
             ListTile(
               leading: Icon(Icons.settings),

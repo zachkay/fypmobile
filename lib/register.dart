@@ -32,7 +32,7 @@ class _RegisterState extends State<Register> {
 
   save() async {
     final response = await http
-        .post("http://budee.000webhostapp.com/api_verification.php", body: {
+        .post("http://10.0.2.2/budee/api_verification.php", body: {
       "flag": 2.toString(),
       "name": name,
       "email": email,
@@ -215,6 +215,7 @@ class _RegisterState extends State<Register> {
                       new Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
+                          
                           SizedBox(
                             height: 44.0,
                             child: RaisedButton(
