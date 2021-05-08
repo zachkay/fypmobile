@@ -21,24 +21,31 @@ class _CalcForm2State extends State<CalcForm2> {
 
   bool loading = false;
 
-  Map<String, bool> touched = {
-    "locAField": false,
-  };
+  // Map<String, bool> touched = {
+  //   "tfAllowedVD": false,
+  // };
 
-  final TextEditingController tfCPhase = TextEditingController();
   final TextEditingController tfAllowedVD = TextEditingController();
-  final TextEditingController tfDist = TextEditingController();
-  final TextEditingController tfCurrentLoad = TextEditingController();
 
-  String selectedBreaker = "";
+  String allowedVD;
+  String selectedInstType = "";
+  String selectedCablePhase = "";
+  var selectedCableIz;
+  var selectedCableType;
+  int cableQty;
+  double calcCableVd;
+  double calcCableVdPercent;
+  double calcCablePrice;
+  double vd;
+  double price;
+
   // List data = List();
   Map<String, dynamic> data = new Map<String, dynamic>();
-  List breakerData = [];
-  List cphaseData = [];
-  List ctypeData = [];
-  List cizData = [];
-  List cvdData = [];
-  List cpriceData = [];
+  List cPhaseData = [];
+  List cTypeData = [];
+  List filterCTypeData = [];
+  List cSpecData = [];
+  List filterCSpecData = [];
 
   Future getAllData() async {
     var response = await http.get("http://10.0.2.2/budee/call_data.php",
@@ -48,36 +55,136 @@ class _CalcForm2State extends State<CalcForm2> {
 
     setState(() {
       data = jsonData;
-      breakerData = data["breaker"];
-      cphaseData = data["cphase"];
-      ctypeData = data["ctype"];
-      cizData = data["ciz"];
-      cvdData = data["cvd"];
-      cpriceData = data["cprice"];
+      cPhaseData = data["cphase"];
+      filterCTypeData = cTypeData = data["ctype"];
+      filterCSpecData = cSpecData = data["cspec"];
     });
-
-    print(jsonData);
+    print(filterCSpecData);
   }
-  // double estDist = dist * 0.15;
-  // double dist = double.parse(tfDist.text);
+
+  filterCableType() {
+    setState(() {
+      selectedCableType = null;
+      selectedCableIz = null;
+      filterCTypeData = cTypeData
+          .where((ctype) => (ctype['phase_id'] == selectedCablePhase &&
+              ctype['installation_type'].contains(selectedInstType)))
+          .toList();
+    });
+  }
+
+  filterCableIz() {
+    setState(() {
+      selectedCableIz = null;
+      filterCSpecData = cSpecData
+          .where((ciz) => (ciz['type_id'] == selectedCableType &&
+              double.parse(ciz['iz']) > widget.calculationDetail.bSize))
+          .toList();
+    });
+  }
+
+  String getPhase() {
+    List getPhaseName = cPhaseData.where((cphase) {
+      return (cphase['phase_id'] == selectedCablePhase);
+    }).toList();
+    return getPhaseName.length > 0 ? getPhaseName[0]['phase'] : "";
+  }
+
+  String getCable() {
+    List getCablename = cTypeData.where((cname) {
+      return (cname['type_id'] == selectedCableType);
+    }).toList();
+    return getCablename.length > 0 ? getCablename[0]['cable_name'] : "";
+  }
+
+  double getVd(typeId, izValue) {
+    List filterVd = cSpecData.where((ciz) {
+      return (ciz['type_id'] == typeId && (ciz['iz']) == izValue);
+    }).toList();
+    return filterVd.length > 0 ? double.parse(filterVd[0]['vd']) : 0;
+  }
+
+  double getPrice(typeId, izValue) {
+    // function return value = 10.50
+    List filterPrice = cSpecData.where((ciz) {
+      return (ciz['type_id'] == typeId && (ciz['iz']) == izValue);
+    }).toList();
+    return filterPrice.length > 0 ? double.parse(filterPrice[0]['price']) : 0;
+  }
+
+//function multiple calculation in dropdown
+  calcVd(val) {
+    vd = getVd(selectedCableType, selectedCableIz);
+    if (val == 'Ib (Current Load)') {
+      calcCableVd = (vd *
+              widget.calculationDetail.estDist *
+              widget.calculationDetail.cLoad) /
+          (1000.0 * cableQty);
+      if (selectedCablePhase == 1) {
+        calcCableVdPercent = (calcCableVd * 100) / 230;
+      } else {
+        calcCableVdPercent = (calcCableVd * 100) / 400;
+      }
+    } else {
+      calcCableVd = (vd *
+              widget.calculationDetail.estDist *
+              widget.calculationDetail.bSize.toDouble()) /
+          (1000.0 * cableQty);
+      if (selectedCablePhase == 1) {
+        calcCableVdPercent = (calcCableVd * 100) / 230;
+      } else {
+        calcCableVdPercent = (calcCableVd * 100) / 400;
+      }
+    }
+    calcPrice();
+    // print(calcCableVd);
+    // print(calcCableVdPercent);
+    // print(price);
+    // print(calcCablePrice);
+  }
+
+  calcPrice() {
+    price = getPrice(selectedCableType, selectedCableIz);
+    calcCablePrice = price * widget.calculationDetail.estDist * cableQty;
+  }
+
+  toScreen3(context) {
+    if (_formKey.currentState.validate()) {
+      setState(() {
+        loading = true;
+      });
+      _formKey.currentState.save();
+      Timer(Duration(seconds: 2), () {
+        setState(() {
+          loading = false;
+        });
+        widget.calculationDetail.cPhase = getPhase();
+        widget.calculationDetail.allowedVD = double.parse(tfAllowedVD.text);
+        widget.calculationDetail.instType = selectedInstType;
+        widget.calculationDetail.cType = getCable();
+        widget.calculationDetail.cQty = cableQty;
+        widget.calculationDetail.cIz = double.parse(selectedCableIz);
+        widget.calculationDetail.cVd = vd;
+        widget.calculationDetail.calcVd = calcCableVd;
+        widget.calculationDetail.calcVdPercent = calcCableVdPercent;
+        widget.calculationDetail.cPrice = price;
+        widget.calculationDetail.overallPrice = calcCablePrice;
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Screen3(widget.calculationDetail),
+          ),
+        );
+      });
+    }
+  }
 
   @override
   void initState() {
     super.initState();
     print(widget.calculationDetail.locA);
     getAllData();
-  }
-
-  toScreen3() {
-    widget.calculationDetail.cPhase = '';
-    widget.calculationDetail.allowedVD = double.parse('3');
-
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => Screen3(widget.calculationDetail),
-      ),
-    );
   }
 
   @override
@@ -109,19 +216,22 @@ class _CalcForm2State extends State<CalcForm2> {
                       labelText: 'Cable Phase',
                       // icon: Icon(Icons.calendar_today),
                     ),
-                    items: cphaseData.map(
+                    items: cPhaseData.map(
                       (list) {
                         return DropdownMenuItem(
                           child: Text(list['phase']),
-                          value: list['phase'],
+                          value: list['phase_id'],
                         );
                       },
                     ).toList(),
                     onChanged: (val) {
                       setState(() {
-                        //selectedBreaker = val;
+                        selectedCablePhase = (val);
+                        print(selectedCablePhase);
+                        filterCableType();
                       });
                     },
+                    // onChanged: filterCableType,
                   ),
                   Container(
                     child: Padding(
@@ -143,11 +253,11 @@ class _CalcForm2State extends State<CalcForm2> {
                       labelText: 'Voltage Drop Allowed',
                       // icon: Icon(Icons.location_on),
                     ),
-                    controller: tfLocA,
+                    controller: tfAllowedVD,
                     // onSaved: (val) => _cardDetails.cardHolderName = val,
-                    onChanged: (value) {
+                    onChanged: (val) {
                       setState(() {
-                        touched['locAField'] = true;
+                        allowedVD = val;
                       });
                     },
                     validator: (value) {
@@ -155,7 +265,8 @@ class _CalcForm2State extends State<CalcForm2> {
                         return "This form value must be filled";
                       return null;
                     },
-                    autovalidate: touched['locAField'],
+                    // autovalidate: touched['tfAllowedVD'],
+                    keyboardType: TextInputType.number,
                   ),
                   DropdownButtonFormField(
                     //onSaved: (val) => _cardDetails.expiryMonth = val,
@@ -164,39 +275,123 @@ class _CalcForm2State extends State<CalcForm2> {
                       labelText: 'Installation Type',
                       // icon: Icon(Icons.calendar_today),
                     ),
-                    items: <String>['INDOOR', 'OUTDOOR']
-                        .map<DropdownMenuItem<String>>((String value) {
+                    items: <String>[
+                      'INDOOR',
+                      'OUTDOOR'
+                    ].map<DropdownMenuItem<String>>((String selectedInstType) {
                       return DropdownMenuItem<String>(
-                        child: Text(value),
-                        value: value,
+                        child: Text(selectedInstType),
+                        value: selectedInstType,
                       );
                     }).toList(),
                     onChanged: (val) {
                       setState(() {
-                        //selectedBreaker = val;
+                        selectedInstType = val;
+                        filterCableType();
                       });
                     },
                   ),
                   DropdownButtonFormField(
                     //onSaved: (val) => _cardDetails.expiryMonth = val,
-                    //value: selectedBreaker,
+                    value: selectedCableType,
                     decoration: InputDecoration(
                       labelText: 'Cable Type',
                       // icon: Icon(Icons.calendar_today),
                     ),
-                    items: cphaseData.map(
+                    items: filterCTypeData.map(
                       (list) {
                         return DropdownMenuItem(
-                          child: Text(list['phase']),
-                          value: list['phase'],
+                          child: Text(list['cable_name']),
+                          value: list['type_id'],
                         );
                       },
                     ).toList(),
                     onChanged: (val) {
                       setState(() {
-                        //selectedBreaker = val;
+                        selectedCableType = val;
+                        filterCableIz();
                       });
                     },
+                  ),
+                  DropdownButtonFormField(
+                    //onSaved: (val) => _cardDetails.expiryMonth = val,
+                    value: cableQty,
+                    decoration: InputDecoration(
+                      labelText: 'Number of Cable',
+                      // icon: Icon(Icons.calendar_today),
+                    ),
+                    items: <int>[1, 2, 3, 4]
+                        .map<DropdownMenuItem<int>>((int cableQty) {
+                      return DropdownMenuItem<int>(
+                        child: Text(cableQty.toString()),
+                        value: cableQty,
+                      );
+                    }).toList(),
+                    // onChanged: (val) {},
+                    onChanged: (val) {
+                      setState(() {
+                        cableQty = val;
+                      });
+                    },
+                  ),
+                  Container(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
+                      child: Text(
+                        'Notes: Iz > In',
+                        style: TextStyle(fontStyle: FontStyle.italic),
+                      ),
+                    ),
+                  ),
+                  DropdownButtonFormField(
+                    //onSaved: (val) => _cardDetails.expiryMonth = val,
+                    value: selectedCableIz,
+                    decoration: InputDecoration(
+                      labelText: 'Cable Iz',
+                      // icon: Icon(Icons.calendar_today),
+                    ),
+                    items: filterCSpecData.map(
+                      (list) {
+                        return DropdownMenuItem(
+                          child: Text(list['iz']),
+                          value: list['iz'],
+                        );
+                      },
+                    ).toList(),
+                    onChanged: (val) {
+                      setState(() {
+                        selectedCableIz = val;
+                      });
+                    },
+                  ),
+                  Container(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 20.0),
+                      child: Text(
+                        'CURRENT FOR VOLTAGE DROP CALCULATION',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                  DropdownButtonFormField(
+                    // value: vdCalcCurrent,
+                    decoration: InputDecoration(
+                      labelText: 'I (current)',
+                      // icon: Icon(Icons.calendar_today),
+                    ),
+                    items: <String>['Ib (Current Load)', 'In (Breaker Size)']
+                        .map<DropdownMenuItem<String>>((String cVd) {
+                      return DropdownMenuItem<String>(
+                        child: Text(cVd.toString()),
+                        value: cVd,
+                      );
+                    }).toList(),
+                    onChanged: calcVd,
+                    // onChanged: (val) {
+                    //   setState(() {
+                    //     calcVd = val;
+                    //   });
+                    // },
                   ),
                   Container(
                     child: Padding(
@@ -210,10 +405,12 @@ class _CalcForm2State extends State<CalcForm2> {
                             textColor: Colors.black,
                             onPressed: () {
                               _formKey.currentState.reset();
-                              tfLocA.clear();
-                              tfLocB.clear();
-                              tfDist.clear();
-                              tfCurrentLoad.clear();
+                              // tfLocA.clear();
+                              // tfLocB.clear();
+                              setState(() {
+                                selectedCableType = null;
+                                selectedCableIz = null;
+                              });
                             },
                           ),
                           RaisedButton(
@@ -222,25 +419,11 @@ class _CalcForm2State extends State<CalcForm2> {
                                     color: Colors.white,
                                     size: 15.0,
                                   )
-                                : Text('Next'),
+                                : Text('Calculate'),
                             color: Colors.amber,
                             textColor: Colors.black,
                             onPressed: () {
-                              if (_formKey.currentState.validate()) {
-                                setState(() {
-                                  loading = true;
-                                });
-                                _formKey.currentState.save();
-                                Timer(Duration(seconds: 1), () {
-                                  setState(() {
-                                    loading = false;
-                                  });
-                                  final snackBar =
-                                      SnackBar(content: Text('Calculating...'));
-                                  Scaffold.of(context).showSnackBar(snackBar);
-                                  print('Saved');
-                                });
-                              }
+                              toScreen3(context);
                             },
                           ),
                         ],

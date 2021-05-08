@@ -31,6 +31,7 @@ class _CalcForm1State extends State<CalcForm1> {
   double dist = 0.0;
   double estDist = 0.0;
   String selectedBreakerSize;
+  String selectedCLoad;
 
   calcDist(val) {
     setState(() {
@@ -56,8 +57,9 @@ class _CalcForm1State extends State<CalcForm1> {
     print(jsonData);
   }
 
-  filterCLoad(val) {
+  filterBSize(val) {
     setState(() {
+      selectedBreakerSize = null;
       filteredBData = breakerData
           .where((breaker) => int.parse(breaker['size']) > int.parse(val))
           .toList();
@@ -77,7 +79,8 @@ class _CalcForm1State extends State<CalcForm1> {
         CalculationDetail calculationDetail = new CalculationDetail(
           locA: tfLocA.text,
           locB: tfLocB.text,
-          dist: estDist,
+          dist: dist,
+          estDist: estDist,
           cLoad: double.parse(tfCurrentLoad.text),
           bSize: int.parse(selectedBreakerSize),
         );
@@ -224,7 +227,13 @@ class _CalcForm1State extends State<CalcForm1> {
                     ),
                     controller: tfCurrentLoad,
                     // onSaved: (val) => _cardDetails.cardNumber = val,
-                    onChanged: filterCLoad,
+                    // onChanged: filterBSize,
+                    onChanged: (val) {
+                      setState(() {
+                        filterBSize(val);
+                        selectedCLoad = val;
+                      });
+                    },
                     validator: (value) {
                       if (value.isEmpty)
                         return "This form value must be filled";
@@ -234,7 +243,7 @@ class _CalcForm1State extends State<CalcForm1> {
                   ),
                   DropdownButtonFormField(
                     //onSaved: (val) => _cardDetails.expiryMonth = val,
-                    //value: selectedBreaker,
+                    value: selectedBreakerSize,
                     decoration: InputDecoration(
                       labelText: 'Breaker Size(In)',
                       // icon: Icon(Icons.calendar_today),
@@ -269,6 +278,10 @@ class _CalcForm1State extends State<CalcForm1> {
                               tfLocB.clear();
                               tfDist.clear();
                               tfCurrentLoad.clear();
+                              setState(() {
+                                selectedCLoad = null;
+                                selectedBreakerSize = null;
+                              });
                             },
                           ),
                           RaisedButton(

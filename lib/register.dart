@@ -72,7 +72,7 @@ class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[500],
+      backgroundColor: Color.fromRGBO(217, 217, 217, 1),
       body: Center(
         child: ListView(
           shrinkWrap: true,
@@ -81,27 +81,22 @@ class _RegisterState extends State<Register> {
             Center(
               child: Container(
                 padding: const EdgeInsets.all(8.0),
-                color: Colors.grey[500],
                 child: Form(
                   key: _key,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Image.network(
-                          "https://seeklogo.com/images/J/jabatan-kerja-raya-malaysia-logo-BF3334E07F-seeklogo.com.png"),
+                      Image.asset('asset/img/BuDEE.png', width: 300, height: 300,),
                       SizedBox(
-                        height: 40,
+                        height: 30,
                       ),
-                      SizedBox(
-                        height: 50,
-                        child: Text(
-                          "Register",
-                          style: TextStyle(color: Colors.black, fontSize: 30.0),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 25,
-                      ),
+                      // SizedBox(
+                      //   height: 50,
+                      //   child: Text(
+                      //     "Register",
+                      //     style: TextStyle(color: Colors.black, fontSize: 30.0),
+                      //   ),
+                      // ),
 
                       //card for Fullname TextFormField
                       Card(
@@ -215,7 +210,7 @@ class _RegisterState extends State<Register> {
                       new Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
-                          
+
                           SizedBox(
                             height: 44.0,
                             child: RaisedButton(

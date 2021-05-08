@@ -1,6 +1,6 @@
 # Flutter Login Register
 
-Flutter Login Register App with Php API and MySql Database
+BuDEE App : Electrical Engineering Design Buddy
 
 It is Flutter App with Login Register with Shared Preference (You won't be logged out until you press Logout) with Php API & MySql Database.
 

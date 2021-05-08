@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 // import 'package:flutter_login/screen/calcScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'screen/screen1.dart';
-import 'screen/screen2.dart';
-import 'screen/screen3.dart';
+// import 'screen/screen2.dart';
+// import 'screen/screen3.dart';
 
 class MainMenu extends StatefulWidget {
   final VoidCallback signOut;
@@ -16,7 +16,6 @@ class MainMenu extends StatefulWidget {
 }
 
 class _MainMenuState extends State<MainMenu> {
-  
   signOut() {
     setState(() {
       widget.signOut();
@@ -94,29 +93,58 @@ class _MainMenuState extends State<MainMenu> {
           padding: EdgeInsets.zero,
           children: <Widget>[
             DrawerHeader(
+              margin: EdgeInsets.only(bottom: 8.0),
               decoration: BoxDecoration(
                 color: Colors.black,
               ),
-              child: Text(
-                'BuDEE',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                ),
+              child: Column(
+                children: [
+                  CircleAvatar(
+                    backgroundColor: Colors.amber,
+                    foregroundColor: Colors.black,
+                    radius: 35.0,
+                    child: Text(
+                      name.length > 0 ? name[0] : "",
+                      style: TextStyle(fontSize: 40),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                  Text("Hi, " +
+                    name,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5.0,
+                  ),
+                  Text(
+                    email,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 15.0,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ],
               ),
             ),
-            ListTile(
-              leading: Icon(Icons.account_circle),
-              title: Text('Profile'),
-              onTap: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => Screen3(),
-                //   ),
-                // );
-              },
-            ),
+            // ListTile(
+            //   leading: Icon(Icons.account_circle),
+            //   title: Text('Profile'),
+            //   onTap: () {
+            //     // Navigator.push(
+            //     //   context,
+            //     //   MaterialPageRoute(
+            //     //     builder: (context) => Screen3(),
+            //     //   ),
+            //     // );
+            //   },
+            // ),
             ListTile(
               leading: Icon(Icons.games),
               title: Text('Calculator'),
@@ -130,24 +158,42 @@ class _MainMenuState extends State<MainMenu> {
               },
             ),
             ListTile(
-              leading: Icon(Icons.message),
-              title: Text('Feedback'),
-            ),
-            ListTile(
               leading: Icon(Icons.access_time),
               title: Text('History'),
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CalcForm1(),
-                  ),
-                );
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => CalcForm1(),
+                //   ),
+                // );
               },
             ),
+
             ListTile(
-              leading: Icon(Icons.settings),
-              title: Text('Settings'),
+              leading: Icon(Icons.message),
+              title: Text('Feedback'),
+              onTap: () {},
+            ),
+
+            // ListTile(
+            //   leading: Icon(Icons.settings),
+            //   title: Text('Settings'),
+            //   onTap: (){},
+            //   // onTap: () {
+            //   //   Navigator.push(
+            //   //     context,
+            //   //     MaterialPageRoute(
+            //   //       builder: (context) => _showFeedback(context),
+            //   //     ),
+            //   //   );
+            //   // },
+            // ),
+            Divider(),
+            ListTile(
+              leading: Icon(Icons.info),
+              title: Text('About'),
+              onTap: () {},
               // onTap: () {
               //   Navigator.push(
               //     context,

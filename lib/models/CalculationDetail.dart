@@ -11,7 +11,12 @@ class CalculationDetail{
   String instType;
   String cType;
   int cQty;
-  int cIz;
+  double cIz;
+  double cVd;
+  double calcVd;
+  double calcVdPercent;
+  double cPrice;
+  double overallPrice;
 
   CalculationDetail({
     this.locA,
@@ -25,6 +30,11 @@ class CalculationDetail{
     this.instType,
     this.cType,
     this.cQty,
-    this.cIz});
+    this.cIz,
+    this.cVd,
+    this.calcVd,
+    this.calcVdPercent,
+    this.cPrice,
+    this.overallPrice});
 
 }
