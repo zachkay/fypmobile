@@ -31,8 +31,8 @@ class _RegisterState extends State<Register> {
   }
 
   save() async {
-    final response = await http
-        .post("http://10.0.2.2/budee/api_verification.php", body: {
+    final response =
+        await http.post("http://10.0.2.2/budee/api_verification.php", body: {
       "flag": 2.toString(),
       "name": name,
       "email": email,
@@ -65,7 +65,7 @@ class _RegisterState extends State<Register> {
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIos: 1,
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.black,
         textColor: Colors.white);
   }
 
@@ -86,7 +86,11 @@ class _RegisterState extends State<Register> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Image.asset('asset/img/BuDEE.png', width: 300, height: 300,),
+                      Image.asset(
+                        'asset/img/BuDEE.png',
+                        width: 300,
+                        height: 300,
+                      ),
                       SizedBox(
                         height: 30,
                       ),
@@ -141,7 +145,7 @@ class _RegisterState extends State<Register> {
                           decoration: InputDecoration(
                               prefixIcon: Padding(
                                 padding: EdgeInsets.only(left: 20, right: 15),
-                                child: Icon(Icons.email, color: Colors.black),
+                                child: Icon(Icons.email_rounded, color: Colors.black),
                               ),
                               contentPadding: EdgeInsets.all(18),
                               labelText: "Email"),
@@ -195,7 +199,7 @@ class _RegisterState extends State<Register> {
                               ),
                               prefixIcon: Padding(
                                 padding: EdgeInsets.only(left: 20, right: 15),
-                                child: Icon(Icons.phonelink_lock,
+                                child: Icon(Icons.lock_rounded,
                                     color: Colors.black),
                               ),
                               contentPadding: EdgeInsets.all(18),
@@ -203,25 +207,30 @@ class _RegisterState extends State<Register> {
                         ),
                       ),
 
-                      Padding(
-                        padding: EdgeInsets.all(12.0),
+                      // Padding(
+                      //   padding: EdgeInsets.all(12.0),
+                      // ),
+
+                      SizedBox(
+                        height: 20,
                       ),
 
-                      new Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-
-                          SizedBox(
-                            height: 44.0,
-                            child: RaisedButton(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15.0)),
-                                child: Text(
-                                  "Login Page",
-                                  style: TextStyle(fontSize: 18.0),
+                          Expanded(
+                            child: ElevatedButton(
+                                child: Text("LOGIN"),
+                                style: ElevatedButton.styleFrom(
+                                  textStyle: TextStyle(
+                                      fontSize: 15.0,
+                                      // fontFamily: 'OpenSans',
+                                      fontWeight: FontWeight.bold),
+                                  primary: Colors.amberAccent,
+                                  onPrimary: Colors.black,
+                                  elevation: 5,
+                                  shape: StadiumBorder(),
                                 ),
-                                textColor: Colors.black,
-                                color: Color(0xFFf7d426),
                                 onPressed: () {
                                   Navigator.push(
                                     context,
@@ -231,16 +240,21 @@ class _RegisterState extends State<Register> {
                                 }),
                           ),
                           SizedBox(
-                            height: 44.0,
-                            child: RaisedButton(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15.0)),
-                                child: Text(
-                                  "Register",
-                                  style: TextStyle(fontSize: 18.0),
+                                width: 20,
+                              ),
+                          Expanded(
+                            child: ElevatedButton(
+                                child: Text("REGISTER"),
+                                style: ElevatedButton.styleFrom(
+                                  textStyle: TextStyle(
+                                      fontSize: 15.0,
+                                      // fontFamily: 'OpenSans',
+                                      fontWeight: FontWeight.bold),
+                                  primary: Colors.amberAccent,
+                                  onPrimary: Colors.black,
+                                  elevation: 5,
+                                  shape: StadiumBorder(),
                                 ),
-                                textColor: Colors.black,
-                                color: Color(0xFFf7d426),
                                 onPressed: () {
                                   check();
                                 }),

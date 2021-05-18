@@ -1,9 +1,15 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import '../models/CalculationDetail.dart';
+import '../models/calcDetail.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+
 // import 'screen2.dart';
 
 class Screen3 extends StatefulWidget {
-  final CalculationDetail calculationDetail;
+  final calcDetail calculationDetail;
   Screen3(this.calculationDetail);
 
   @override
@@ -12,6 +18,53 @@ class Screen3 extends StatefulWidget {
 
 class _ResultPage extends State<Screen3> {
   // final _formKey = GlobalKey<FormState>();
+  saveToast(String toast) {
+    return Fluttertoast.showToast(
+        msg: toast,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIos: 1,
+        backgroundColor: Colors.black,
+        textColor: Colors.white);
+  }
+
+  save() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    final response =
+        await http.post("http://10.0.2.2/budee/save_data.php", body: {
+      "userid": preferences.getString("id").toString(),
+      "locA": widget.calculationDetail.locA,
+      "locB": widget.calculationDetail.locB,
+      "estDist": widget.calculationDetail.estDist.toString(),
+      "cType":widget.calculationDetail.cType,
+      "cVd":widget.calculationDetail.cVd.toString(),
+      "cIz":widget.calculationDetail.cIz.toString(),
+      "calcVd":widget.calculationDetail.calcVd.toString(),
+      "calcVdPercent":widget.calculationDetail.calcVdPercent.toString(),
+      "allowedVd":widget.calculationDetail.allowedVD.toString(),
+      "cQty":widget.calculationDetail.cQty.toString(),
+      "cPrice":widget.calculationDetail.cPrice.toString(),
+      "oPrice":widget.calculationDetail.overallPrice.toString(),
+    });
+
+    final data = jsonDecode(response.body);
+    int value = data['value'];
+    String message = data['message'];
+    if (value == 1) {
+      setState(() {
+        Navigator.pop(context);
+        Navigator.pop(context);
+      });
+      print(message);
+      saveToast(message);
+    } else if (value == 2) {
+      print(message);
+      saveToast(message);
+    } else {
+      print(message);
+      saveToast(message);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +103,9 @@ class _ResultPage extends State<Screen3> {
                 //     ),
                 //   ),
                 // ),
-                SizedBox(height: 25,),
+                SizedBox(
+                  height: 25,
+                ),
                 Card(
                   color: Colors.white,
                   elevation: 8,
@@ -58,7 +113,7 @@ class _ResultPage extends State<Screen3> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Container(
-                    child: DataTable(                
+                    child: DataTable(
                       columnSpacing: 50,
                       columns: <DataColumn>[
                         DataColumn(
@@ -92,6 +147,31 @@ class _ResultPage extends State<Screen3> {
                         //     ),
                         //   ],
                         // ),
+                        DataRow(
+                          cells: <DataCell>[
+                            DataCell(Text('Starting Point:',
+                                style: TextStyle(fontWeight: FontWeight.bold))),
+                            DataCell(Text('${widget.calculationDetail.locA}',
+                                style: TextStyle(fontStyle: FontStyle.italic))),
+                          ],
+                        ),
+                        DataRow(
+                          cells: <DataCell>[
+                            DataCell(Text('End Point:',
+                                style: TextStyle(fontWeight: FontWeight.bold))),
+                            DataCell(Text('${widget.calculationDetail.locB}',
+                                style: TextStyle(fontStyle: FontStyle.italic))),
+                          ],
+                        ),
+                        DataRow(
+                          cells: <DataCell>[
+                            DataCell(Text('Estimated Distance:',
+                                style: TextStyle(fontWeight: FontWeight.bold))),
+                            DataCell(Text(
+                                '${widget.calculationDetail.estDist.toStringAsFixed(1)}m',
+                                style: TextStyle(fontStyle: FontStyle.italic))),
+                          ],
+                        ),
                         DataRow(
                           cells: <DataCell>[
                             DataCell(Text('Cable Type:',
@@ -175,24 +255,53 @@ class _ResultPage extends State<Screen3> {
                   ),
                 ),
                 SizedBox(
-                  height: 10,
+                  height: 20,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    RaisedButton(
+                    ElevatedButton(
                         // shape: RoundedRectangleBorder(
                         //     borderRadius: BorderRadius.circular(13.0)),
-                        child: Text(
-                          "Confirm",
-                          style: TextStyle(fontSize: 16.0),
+                        child: Text("Save"),
+                        style: ElevatedButton.styleFrom(
+                          textStyle: TextStyle(
+                              fontSize: 15.0,
+                              // fontFamily: 'OpenSans',
+                              fontWeight: FontWeight.bold),
+                          primary: Colors.amberAccent,
+                          onPrimary: Colors.black,
+                          elevation: 5,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 50, vertical: 10),
+                          shape: StadiumBorder(),
                         ),
-                        textColor: Colors.black,
-                        color: Colors.amber,
+                        onPressed: () {
+                          save();
+                        }),
+                    ElevatedButton(
+                        // shape: RoundedRectangleBorder(
+                        //     borderRadius: BorderRadius.circular(13.0)),
+                        child: Text("Print"),
+                        style: ElevatedButton.styleFrom(
+                          textStyle: TextStyle(
+                              fontSize: 15.0,
+                              // fontFamily: 'OpenSans',
+                              fontWeight: FontWeight.bold),
+                          primary: Colors.amberAccent,
+                          onPrimary: Colors.black,
+                          elevation: 5,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 50, vertical: 10),
+                          shape: StadiumBorder(),
+                        ),
                         onPressed: () {
                           // save();
                         }),
                   ],
+                ),
+                SizedBox(
+                  height: 10,
                 ),
               ],
             ),

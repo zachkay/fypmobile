@@ -2,14 +2,14 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import '../models/CalculationDetail.dart';
+import '../models/calcDetail.dart';
 import './screen3.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import 'package:http/http.dart' as http;
 
 class CalcForm2 extends StatefulWidget {
-  final CalculationDetail calculationDetail;
+  final calcDetail calculationDetail;
   CalcForm2(this.calculationDetail);
 
   @override
@@ -59,7 +59,7 @@ class _CalcForm2State extends State<CalcForm2> {
       filterCTypeData = cTypeData = data["ctype"];
       filterCSpecData = cSpecData = data["cspec"];
     });
-    print(filterCSpecData);
+    // print(filterCSpecData);
   }
 
   filterCableType() {
@@ -183,7 +183,6 @@ class _CalcForm2State extends State<CalcForm2> {
   @override
   void initState() {
     super.initState();
-    print(widget.calculationDetail.locA);
     getAllData();
   }
 
@@ -227,10 +226,12 @@ class _CalcForm2State extends State<CalcForm2> {
                     onChanged: (val) {
                       setState(() {
                         selectedCablePhase = (val);
-                        print(selectedCablePhase);
+                        // print(selectedCablePhase);
                         filterCableType();
                       });
                     },
+                    validator: (val) => val == null
+                    ? 'Please select cable phase' : null,
                     // onChanged: filterCableType,
                   ),
                   Container(
@@ -290,6 +291,8 @@ class _CalcForm2State extends State<CalcForm2> {
                         filterCableType();
                       });
                     },
+                    validator: (val) => val == null
+                    ? 'Please select installation type' : null,
                   ),
                   DropdownButtonFormField(
                     //onSaved: (val) => _cardDetails.expiryMonth = val,
@@ -312,6 +315,8 @@ class _CalcForm2State extends State<CalcForm2> {
                         filterCableIz();
                       });
                     },
+                    validator: (val) => val == null
+                    ? 'Please select cable type' : null,
                   ),
                   DropdownButtonFormField(
                     //onSaved: (val) => _cardDetails.expiryMonth = val,
@@ -333,6 +338,8 @@ class _CalcForm2State extends State<CalcForm2> {
                         cableQty = val;
                       });
                     },
+                    validator: (val) => val == null
+                    ? 'Please select cable No.' : null,
                   ),
                   Container(
                     child: Padding(
@@ -363,6 +370,8 @@ class _CalcForm2State extends State<CalcForm2> {
                         selectedCableIz = val;
                       });
                     },
+                    validator: (val) => val == null
+                    ? 'Please select cable Iz' : null,
                   ),
                   Container(
                     child: Padding(
@@ -376,7 +385,7 @@ class _CalcForm2State extends State<CalcForm2> {
                   DropdownButtonFormField(
                     // value: vdCalcCurrent,
                     decoration: InputDecoration(
-                      labelText: 'I (current)',
+                      labelText: 'Voltage Drop Calculation Current (I)',
                       // icon: Icon(Icons.calendar_today),
                     ),
                     items: <String>['Ib (Current Load)', 'In (Breaker Size)']
@@ -387,48 +396,68 @@ class _CalcForm2State extends State<CalcForm2> {
                       );
                     }).toList(),
                     onChanged: calcVd,
+                    validator: (val) => val == null
+                    ? 'Please select current (I) for the vd calculation' : null,
                     // onChanged: (val) {
                     //   setState(() {
                     //     calcVd = val;
                     //   });
                     // },
                   ),
-                  Container(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          RaisedButton(
-                            child: Text('Reset'),
-                            color: Colors.amber,
-                            textColor: Colors.black,
-                            onPressed: () {
-                              _formKey.currentState.reset();
-                              // tfLocA.clear();
-                              // tfLocB.clear();
-                              setState(() {
-                                selectedCableType = null;
-                                selectedCableIz = null;
-                              });
-                            },
-                          ),
-                          RaisedButton(
-                            child: loading
-                                ? SpinKitWave(
-                                    color: Colors.white,
-                                    size: 15.0,
-                                  )
-                                : Text('Calculate'),
-                            color: Colors.amber,
-                            textColor: Colors.black,
-                            onPressed: () {
-                              toScreen3(context);
-                            },
-                          ),
-                        ],
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ElevatedButton(
+                        child: Text('RESET'),
+                        style: ElevatedButton.styleFrom(
+                          textStyle: TextStyle(
+                              fontSize: 15.0,
+                              // fontFamily: 'OpenSans',
+                              fontWeight: FontWeight.bold),
+                          primary: Colors.amberAccent,
+                          onPrimary: Colors.black,
+                          elevation: 5,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 50, vertical: 10),
+                          shape: StadiumBorder(),
+                        ),
+                        onPressed: () {
+                          _formKey.currentState.reset();
+                          // tfLocA.clear();
+                          // tfLocB.clear();
+                          setState(() {
+                            selectedCableType = null;
+                            selectedCableIz = null;
+                          });
+                        },
                       ),
-                    ),
+                      ElevatedButton(
+                        child: loading
+                            ? SpinKitWave(
+                                color: Colors.black,
+                                size: 20.0,
+                              )
+                            : Text('CALCULATE'),
+                        style: ElevatedButton.styleFrom(
+                          textStyle: TextStyle(
+                              fontSize: 15.0,
+                              // fontFamily: 'OpenSans',
+                              fontWeight: FontWeight.bold),
+                          primary: Colors.amberAccent,
+                          onPrimary: Colors.black,
+                          elevation: 5,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 35, vertical: 10),
+                          shape: StadiumBorder(),
+                        ),
+                        onPressed: () {
+                          toScreen3(context);
+                        },
+                      ),
+                    ],
                   ),
                 ]),
               ), // we will work in here

@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import '../models/CalculationDetail.dart';
+import '../models/calcDetail.dart';
 import 'screen2.dart';
 
 import 'package:http/http.dart' as http;
@@ -18,9 +18,9 @@ class _CalcForm1State extends State<CalcForm1> {
 
   bool loading = false;
 
-  Map<String, bool> touched = {
-    "locAField": false,
-  };
+  // Map<String, bool> touched = {
+  //   "locAField": false,
+  // };
 
   final TextEditingController tfLocA = TextEditingController();
   final TextEditingController tfLocB = TextEditingController();
@@ -54,7 +54,7 @@ class _CalcForm1State extends State<CalcForm1> {
       data = jsonData;
       filteredBData = breakerData = data["breaker"];
     });
-    print(jsonData);
+    // print(jsonData);
   }
 
   filterBSize(val) {
@@ -76,7 +76,7 @@ class _CalcForm1State extends State<CalcForm1> {
         setState(() {
           loading = false;
         });
-        CalculationDetail calculationDetail = new CalculationDetail(
+        calcDetail calculationDetail = new calcDetail(
           locA: tfLocA.text,
           locB: tfLocB.text,
           dist: dist,
@@ -140,19 +140,17 @@ class _CalcForm1State extends State<CalcForm1> {
                     ),
                     controller: tfLocA,
                     // onSaved: (val) => _cardDetails.cardHolderName = val,
-                    onChanged: (value) {
-                      print(value);
-                      setState(() {
-                        touched['locAField'] = true;
-                        print(tfLocA.text);
-                      });
-                    },
+                    // onChanged: (value) {
+                    //   setState(() {
+                    //     touched['locAField'] = true;
+                    //   });
+                    // },
                     validator: (value) {
                       if (value.isEmpty)
                         return "This form value must be filled";
                       return null;
                     },
-                    autovalidate: touched['locAField'],
+                    // autovalidate: touched['locAField'],
                   ),
                   TextFormField(
                     decoration: InputDecoration(
@@ -261,45 +259,63 @@ class _CalcForm1State extends State<CalcForm1> {
                         selectedBreakerSize = val;
                       });
                     },
+                    validator: (val) =>
+                        val == null ? 'Please select breaker size' : null,
                   ),
-                  Container(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          RaisedButton(
-                            child: Text('Reset'),
-                            color: Colors.amber,
-                            textColor: Colors.black,
-                            onPressed: () {
-                              _formKey.currentState.reset();
-                              tfLocA.clear();
-                              tfLocB.clear();
-                              tfDist.clear();
-                              tfCurrentLoad.clear();
-                              setState(() {
-                                selectedCLoad = null;
-                                selectedBreakerSize = null;
-                              });
-                            },
-                          ),
-                          RaisedButton(
-                            child: loading
-                                ? SpinKitWave(
-                                    color: Colors.white,
-                                    size: 15.0,
-                                  )
-                                : Text('Next'),
-                            color: Colors.amber,
-                            textColor: Colors.black,
-                            onPressed: () {
-                              _nextScreen(context);
-                            },
-                          ),
-                        ],
+                  SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ElevatedButton(
+                        child: Text('RESET'),
+                        style: ElevatedButton.styleFrom(
+                          textStyle: TextStyle(
+                              fontSize: 15.0,
+                              // fontFamily: 'OpenSans',
+                              fontWeight: FontWeight.bold),
+                          primary: Colors.amberAccent,
+                          onPrimary: Colors.black,
+                          elevation: 5,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 50, vertical: 10),
+                          shape: StadiumBorder(),
+                        ),
+                        onPressed: () {
+                          _formKey.currentState.reset();
+                          tfLocA.clear();
+                          tfLocB.clear();
+                          tfDist.clear();
+                          tfCurrentLoad.clear();
+                          setState(() {
+                            selectedCLoad = null;
+                            selectedBreakerSize = null;
+                          });
+                        },
                       ),
-                    ),
+                      ElevatedButton(
+                        child: loading
+                            ? SpinKitWave(                            
+                                color: Colors.black,
+                                size: 20.0,
+                              )
+                            : Text('NEXT'),
+                        style: ElevatedButton.styleFrom(
+                          textStyle: TextStyle(
+                              fontSize: 15.0,
+                              // fontFamily: 'OpenSans',
+                              fontWeight: FontWeight.bold),
+                          primary: Colors.amberAccent,
+                          onPrimary: Colors.black,
+                          elevation: 5,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 55, vertical: 10),
+                          shape: StadiumBorder(),
+                        ),
+                        onPressed: () {
+                          _nextScreen(context);
+                        },
+                      ),
+                    ],
                   ),
                 ]),
               ), // we will work in here

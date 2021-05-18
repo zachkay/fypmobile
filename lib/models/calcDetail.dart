@@ -1,4 +1,4 @@
-class CalculationDetail{
+class calcDetail{
 
   String locA;
   String locB;
@@ -18,7 +18,7 @@ class CalculationDetail{
   double cPrice;
   double overallPrice;
 
-  CalculationDetail({
+  calcDetail({
     this.locA,
     this.locB,
     this.dist,

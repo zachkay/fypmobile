@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 // import 'package:flutter_login/screen/calcScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'screen/screen1.dart';
+import 'screen/feedback.dart';
 // import 'screen/screen2.dart';
 // import 'screen/screen3.dart';
 
@@ -22,11 +23,11 @@ class _MainMenuState extends State<MainMenu> {
     });
   }
 
-  int currentIndex = 0;
-  String selectedIndex = 'TAB: 0';
+  // int currentIndex = 0;
+  // String selectedIndex = 'TAB: 0';
 
   String email = "", name = "", id = "";
-  TabController tabController;
+  // TabController tabController;
 
   getPref() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -39,32 +40,6 @@ class _MainMenuState extends State<MainMenu> {
     print("user: " + email);
     print("name: " + name);
   }
-
-  // _showFeedback(context) {
-  //   showDialog(
-  //     context: context,
-  //     builder: (context) {
-  //       return QuickFeedback(
-  //         title: 'Leave a feedback',
-  //         // Title of dialog
-  //         showTextBox: true,
-  //         // default false
-  //         textBoxHint: 'Share your feedback',
-  //         // Feedback text field hint text default: Tell us more
-  //         submitText: 'SUBMIT',
-  //         // submit button text default: SUBMIT
-  //         onSubmitCallback: (feedback) {
-  //           print('$feedback'); // map { rating: 2, feedback: 'some feedback' }
-  //           Navigator.of(context).pop();
-  //         },
-  //         askLaterText: 'ASK LATER',
-  //         onAskLaterCallback: () {
-  //           print('Do something on ask later click');
-  //         },
-  //       );
-  //     },
-  //   );
-  // }
 
   @override
   void initState() {
@@ -84,7 +59,7 @@ class _MainMenuState extends State<MainMenu> {
             onPressed: () {
               signOut();
             },
-            icon: Icon(Icons.exit_to_app),
+            icon: Icon(Icons.logout_rounded),
           )
         ],
       ),
@@ -100,7 +75,7 @@ class _MainMenuState extends State<MainMenu> {
               child: Column(
                 children: [
                   CircleAvatar(
-                    backgroundColor: Colors.amber,
+                    backgroundColor: Colors.lightBlueAccent,
                     foregroundColor: Colors.black,
                     radius: 35.0,
                     child: Text(
@@ -146,7 +121,7 @@ class _MainMenuState extends State<MainMenu> {
             //   },
             // ),
             ListTile(
-              leading: Icon(Icons.games),
+              leading: Icon(Icons.calculate_rounded),
               title: Text('Calculator'),
               onTap: () {
                 Navigator.push(
@@ -158,7 +133,7 @@ class _MainMenuState extends State<MainMenu> {
               },
             ),
             ListTile(
-              leading: Icon(Icons.access_time),
+              leading: Icon(Icons.history_rounded),
               title: Text('History'),
               onTap: () {
                 // Navigator.push(
@@ -170,28 +145,27 @@ class _MainMenuState extends State<MainMenu> {
               },
             ),
 
-            ListTile(
-              leading: Icon(Icons.message),
-              title: Text('Feedback'),
-              onTap: () {},
+            Divider(
+              thickness: 1,
+              indent: 15,
+              endIndent: 20,
             ),
 
-            // ListTile(
-            //   leading: Icon(Icons.settings),
-            //   title: Text('Settings'),
-            //   onTap: (){},
-            //   // onTap: () {
-            //   //   Navigator.push(
-            //   //     context,
-            //   //     MaterialPageRoute(
-            //   //       builder: (context) => _showFeedback(context),
-            //   //     ),
-            //   //   );
-            //   // },
-            // ),
-            Divider(),
             ListTile(
-              leading: Icon(Icons.info),
+              leading: Icon(Icons.feedback_rounded),
+              title: Text('Feedback'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => FeedbackForm(),
+                  ),
+                );
+              },
+            ),
+            
+            ListTile(
+              leading: Icon(Icons.info_outline_rounded),
               title: Text('About'),
               onTap: () {},
               // onTap: () {
@@ -217,71 +191,6 @@ class _MainMenuState extends State<MainMenu> {
           ),
         ),
       ),
-//       bottomNavigationBar: BottomNavyBar(
-//         backgroundColor: Colors.black,
-//         iconSize: 30.0,
-// //        iconSize: MediaQuery.of(context).size.height * .60,
-//         currentIndex: currentIndex,
-//         onItemSelected: (index) {
-//           setState(() {
-//             currentIndex = index;
-//           });
-//           /*selectedIndex = 'TAB: $currentIndex';
-// //            print(selectedIndex);
-//           reds(selectedIndex);*/
-//         },
-//
-//         items: [
-//           BottomNavyBarItem(
-//               icon: Icon(Icons.home),
-//               title: Text('Home'),
-//               activeColor: Color(0xFFf7d426)),
-//           BottomNavyBarItem(
-//               icon: Icon(Icons.view_list),
-//               title: Text('List'),
-//               activeColor: Color(0xFFf7d426)),
-//           BottomNavyBarItem(
-//               icon: Icon(Icons.person),
-//               title: Text('Profile'),
-//               activeColor: Color(0xFFf7d426)),
-//         ],
-//       ),
     );
   }
-
-//  Action on Bottom Bar Press
-/*void reds(selectedIndex) {
-//    print(selectedIndex);
-
-    switch (selectedIndex) {
-      case "TAB: 0":
-        {
-          callToast("Tab 0");
-        }
-        break;
-
-      case "TAB: 1":
-        {
-          callToast("Tab 1");
-        }
-        break;
-
-      case "TAB: 2":
-        {
-          callToast("Tab 2");
-        }
-        break;
-    }
-  }
-
-  callToast(String msg) {
-    Fluttertoast.showToast(
-        msg: "$msg",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIos: 1,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0);
-  }*/
 }

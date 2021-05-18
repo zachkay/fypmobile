@@ -37,8 +37,8 @@ class _LoginState extends State<Login> {
 
   login() async {
     // localhost = 10.0.2.2
-    final response = await http
-        .post("http://10.0.2.2/budee/api_verification.php", body: {
+    final response =
+        await http.post("http://10.0.2.2/budee/api_verification.php", body: {
       "flag": 1.toString(),
       "email": email,
       "password": password,
@@ -60,7 +60,6 @@ class _LoginState extends State<Login> {
       print(message);
       loginToast(message);
     } else {
-      print("fail");
       print(message);
       loginToast(message);
     }
@@ -72,7 +71,7 @@ class _LoginState extends State<Login> {
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIos: 1,
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.black45,
         textColor: Colors.white);
   }
 
@@ -139,9 +138,13 @@ class _LoginState extends State<Login> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Image.asset('asset/img/BuDEE.png', width: 300, height: 300,),
+                          Image.asset(
+                            'asset/img/BuDEE.png',
+                            width: 300,
+                            height: 300,
+                          ),
                           SizedBox(
-                            height: 40,
+                            height: 50,
                           ),
                           // Padding(
                           //   padding: const EdgeInsets.fromLTRB(0,20,0,0),
@@ -174,12 +177,15 @@ class _LoginState extends State<Login> {
                                   prefixIcon: Padding(
                                     padding:
                                         EdgeInsets.only(left: 20, right: 15),
-                                    child:
-                                        Icon(Icons.person, color: Colors.black),
+                                    child: Icon(Icons.person_rounded,
+                                        color: Colors.black),
                                   ),
                                   contentPadding: EdgeInsets.all(18),
                                   labelText: "Email / Mobile No."),
                             ),
+                          ),
+                          SizedBox(
+                            height: 10,
                           ),
 
                           // Card for password TextFormField
@@ -202,7 +208,7 @@ class _LoginState extends State<Login> {
                                 labelText: "Password",
                                 prefixIcon: Padding(
                                   padding: EdgeInsets.only(left: 20, right: 15),
-                                  child: Icon(Icons.phonelink_lock,
+                                  child: Icon(Icons.lock_rounded,
                                       color: Colors.black),
                                 ),
                                 suffixIcon: IconButton(
@@ -217,7 +223,7 @@ class _LoginState extends State<Login> {
                           ),
 
                           SizedBox(
-                            height: 12,
+                            height: 50,
                           ),
 
                           // FlatButton(
@@ -230,25 +236,29 @@ class _LoginState extends State<Login> {
                           //   ),
                           // ),
 
-                          Padding(
-                            padding: EdgeInsets.all(14.0),
-                          ),
+                          // Padding(
+                          //   padding: EdgeInsets.all(14.0),
+                          // ),
 
-                          new Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: <Widget>[
-                              SizedBox(
-                                height: 44.0,
-                                child: RaisedButton(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(15.0)),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: ElevatedButton(
                                     child: Text(
-                                      "Register",
-                                      style: TextStyle(fontSize: 18.0),
+                                      "SIGN UP",
                                     ),
-                                    textColor: Colors.black,
-                                    color: Color(0xFFf7d426),
+                                    style: ElevatedButton.styleFrom(
+                                      textStyle: TextStyle(
+                                          fontSize: 15.0,
+                                          // fontFamily: 'OpenSans',
+                                          fontWeight: FontWeight.bold),
+                                      primary: Colors.amberAccent,
+                                      onPrimary: Colors.black,
+                                      elevation: 5,
+                                      shape: StadiumBorder(),
+                                      // minimumSize: Size(160, 40),
+                                    ),
                                     onPressed: () {
                                       Navigator.push(
                                         context,
@@ -258,17 +268,24 @@ class _LoginState extends State<Login> {
                                     }),
                               ),
                               SizedBox(
-                                height: 44.0,
-                                child: RaisedButton(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(15.0)),
+                                width: 20,
+                              ),
+                              Expanded(
+                                child: ElevatedButton(
                                     child: Text(
-                                      "Login",
-                                      style: TextStyle(fontSize: 18.0),
+                                      "LOGIN",
                                     ),
-                                    textColor: Colors.black,
-                                    color: Color(0xFFf7d426),
+                                    style: ElevatedButton.styleFrom(
+                                      textStyle: TextStyle(
+                                          fontSize: 15.0,
+                                          // fontFamily: 'OpenSans',
+                                          fontWeight: FontWeight.bold),
+                                      primary: Colors.amberAccent,
+                                      onPrimary: Colors.black,
+                                      elevation: 5,
+                                      shape: StadiumBorder(),
+                                      // minimumSize: Size(160, 40),
+                                    ),
                                     onPressed: () {
                                       check();
                                     }),
