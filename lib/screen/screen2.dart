@@ -29,7 +29,7 @@ class _CalcForm2State extends State<CalcForm2> {
 
   String allowedVD;
   String selectedInstType = "";
-  String selectedCablePhase = "";
+  var selectedCablePhase;
   var selectedCableIz;
   var selectedCableType;
   int cableQty;
@@ -115,22 +115,24 @@ class _CalcForm2State extends State<CalcForm2> {
 //function multiple calculation in dropdown
   calcVd(val) {
     vd = getVd(selectedCableType, selectedCableIz);
+    
     if (val == 'Ib (Current Load)') {
       calcCableVd = (vd *
               widget.calculationDetail.estDist *
               widget.calculationDetail.cLoad) /
           (1000.0 * cableQty);
-      if (selectedCablePhase == 1) {
+      if (selectedCablePhase == '1') {
         calcCableVdPercent = (calcCableVd * 100) / 230;
       } else {
         calcCableVdPercent = (calcCableVd * 100) / 400;
       }
+
     } else {
       calcCableVd = (vd *
               widget.calculationDetail.estDist *
               widget.calculationDetail.bSize.toDouble()) /
           (1000.0 * cableQty);
-      if (selectedCablePhase == 1) {
+      if (selectedCablePhase == '1') {
         calcCableVdPercent = (calcCableVd * 100) / 230;
       } else {
         calcCableVdPercent = (calcCableVd * 100) / 400;
@@ -192,7 +194,8 @@ class _CalcForm2State extends State<CalcForm2> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: Text('Screen2'),
+        centerTitle: true,
+        title: Text('Screen 2'),
       ),
       body: Container(
         child: Form(
@@ -226,7 +229,7 @@ class _CalcForm2State extends State<CalcForm2> {
                     onChanged: (val) {
                       setState(() {
                         selectedCablePhase = (val);
-                        // print(selectedCablePhase);
+                        print(selectedCablePhase);
                         filterCableType();
                       });
                     },

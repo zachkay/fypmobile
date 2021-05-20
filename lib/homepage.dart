@@ -2,9 +2,10 @@
 import 'package:flutter/material.dart';
 // import 'package:flutter_login/screen/calcScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'screen/history.dart';
 import 'screen/screen1.dart';
 import 'screen/feedback.dart';
-// import 'screen/screen2.dart';
+import 'screen/about.dart';
 // import 'screen/screen3.dart';
 
 class MainMenu extends StatefulWidget {
@@ -51,8 +52,10 @@ class _MainMenuState extends State<MainMenu> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromRGBO(217, 217, 217, 1),
       appBar: AppBar(
         backgroundColor: Colors.black,
+        centerTitle: true,
         title: Text('Dashboard'),
         actions: <Widget>[
           IconButton(
@@ -75,7 +78,7 @@ class _MainMenuState extends State<MainMenu> {
               child: Column(
                 children: [
                   CircleAvatar(
-                    backgroundColor: Colors.lightBlueAccent,
+                    backgroundColor: Colors.amberAccent,
                     foregroundColor: Colors.black,
                     radius: 35.0,
                     child: Text(
@@ -86,8 +89,8 @@ class _MainMenuState extends State<MainMenu> {
                   SizedBox(
                     height: 10.0,
                   ),
-                  Text("Hi, " +
-                    name,
+                  Text(
+                    "Hi, " + name,
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 20.0,
@@ -136,12 +139,12 @@ class _MainMenuState extends State<MainMenu> {
               leading: Icon(Icons.history_rounded),
               title: Text('History'),
               onTap: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => CalcForm1(),
-                //   ),
-                // );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => History(),
+                  ),
+                );
               },
             ),
 
@@ -163,32 +166,310 @@ class _MainMenuState extends State<MainMenu> {
                 );
               },
             ),
-            
+
             ListTile(
               leading: Icon(Icons.info_outline_rounded),
               title: Text('About'),
-              onTap: () {},
-              // onTap: () {
-              //   Navigator.push(
-              //     context,
-              //     MaterialPageRoute(
-              //       builder: (context) => _showFeedback(context),
-              //     ),
-              //   );
-              // },
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => About(),
+                  ),
+                );
+              },
             ),
           ],
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: Center(
-          child: Text(
-            "Aplikasi ini bertujuan sebagai kalkulator kepada pengiraan saiz kabel dan susut voltan."
-            "Saiz kabel adalah penting bagi memastikan operasi yang betul bagi sesebuah litar elektrik."
-            "Pengiraan susut voltan pula adalah suatu cara diagnosis elektrikal yang mampu mencari masalah beban tinggi",
-            style: TextStyle(fontSize: 25.0, color: Colors.black),
-          ),
+        padding: const EdgeInsets.all(10.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            SizedBox(
+              height: 5,
+            ),
+            // Text(
+            //   "Welcome, " + name,
+            //   style: TextStyle(
+            //       color: Colors.black,
+            //       fontSize: 28.0,
+            //       fontWeight: FontWeight.bold),
+            //   textAlign: TextAlign.start,
+            // ),
+            // Text(
+            //   "Select an option",
+            //   style: TextStyle(
+            //       color: Colors.black,
+            //       fontSize: 23.0,
+            //       fontWeight: FontWeight.bold),
+            //   textAlign: TextAlign.start,
+            // ),
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Center(
+                child: Wrap(
+                  spacing: 20,
+                  runSpacing: 20.0,
+                  children: <Widget>[
+                    SizedBox(
+                      width: 160.0,
+                      height: 160.0,
+                      child: Card(
+                        color: Color.fromARGB(255, 21, 21, 21),
+                        elevation: 2.0,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.0)),
+                        child: Center(
+                            child: Column(
+                              children: <Widget>[
+                                IconButton(
+                                  padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                                  icon: Icon(Icons.calculate_rounded),
+                                  iconSize: 90,
+                                  color: Colors.amberAccent,
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => CalcForm1(),
+                                      ),
+                                    );
+                                  },
+                                ),
+                                TextButton(
+                                  child: Text(
+                                    "Calculator",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20.0),
+                                  ),
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => CalcForm1(),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ],
+                            )),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 160.0,
+                      height: 160.0,
+                      child: Card(
+                        color: Color.fromARGB(255, 21, 21, 21),
+                        elevation: 2.0,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.0)),
+                        child: Center(
+                            child: Column(
+                              children: <Widget>[
+                                IconButton(
+                                  padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                                  icon: Icon(Icons.history_rounded),
+                                  iconSize: 90,
+                                  color: Colors.amberAccent,
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => History(),
+                                      ),
+                                    );
+                                  },
+                                ),
+                                TextButton(
+                                  child: Text(
+                                    "History",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20.0),
+                                  ),
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => History(),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ],
+                            )),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 160.0,
+                      height: 160.0,
+                      child: Card(
+                        color: Color.fromARGB(255, 21, 21, 21),
+                        elevation: 2.0,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.0)),
+                        child: Center(
+                            child: Column(
+                              children: <Widget>[
+                                IconButton(
+                                padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                                icon: Icon(Icons.info_outline_rounded),
+                                iconSize: 90,
+                                color: Colors.amberAccent,
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => About(),
+                                    ),
+                                  );
+                                },
+                              ),
+                              TextButton(
+                                child: Text(
+                                  "About",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20.0),
+                                ),
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => About(),
+                                    ),
+                                  );
+                                },
+                              ),
+                              ],
+                            )),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 160.0,
+                      height: 160.0,
+                      child: Card(
+                        color: Color.fromARGB(255, 21, 21, 21),
+                        elevation: 2.0,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.0)),
+                        child: Center(
+                            child: Column(
+                              children: <Widget>[
+                                IconButton(
+                                padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                                icon: Icon(Icons.feedback_rounded),
+                                iconSize: 90,
+                                color: Colors.amberAccent,
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => FeedbackForm(),
+                                    ),
+                                  );
+                                },
+                              ),
+                              TextButton(
+                                child: Text(
+                                  "Feedback",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20.0),
+                                ),
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => FeedbackForm(),
+                                    ),
+                                  );
+                                },
+                              ),
+                              ],
+                            )),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            )
+            // Text(
+            //   'Welcome, ' + name, textAlign: TextAlign.left, textDirection: TextAlign,
+            //   style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, ),
+            // ),
+            // SizedBox(
+            //   height: 10,
+            // ),
+            // Card(
+            //   elevation: 10,
+            //   child: ListTile(
+            //     // leading: Icon(Icons.calculate_rounded),
+            //     title: Text('Calculator', style: TextStyle(fontSize: 30), textAlign: TextAlign.center,),
+            //     onTap: () {
+            //       Navigator.push(
+            //         context,
+            //         MaterialPageRoute(
+            //           builder: (context) => CalcForm1(),
+            //         ),
+            //       );
+            //     },
+            //     minVerticalPadding: 20,
+            //   ),
+            // ),
+            // Card(
+            //   elevation: 10,
+            //   child: ListTile(
+            //     leading: Icon(Icons.calculate_rounded),
+            //     title: Text('History'),
+            //     onTap: () {
+            //       Navigator.push(
+            //         context,
+            //         MaterialPageRoute(
+            //           builder: (context) => CalcForm1(),
+            //         ),
+            //       );
+            //     },
+            //   ),
+            // ),
+            // Card(
+            //   elevation: 10,
+            //   child: ListTile(
+            //     leading: Icon(Icons.calculate_rounded),
+            //     title: Text('Feedback'),
+            //     onTap: () {
+            //       Navigator.push(
+            //         context,
+            //         MaterialPageRoute(
+            //           builder: (context) => CalcForm1(),
+            //         ),
+            //       );
+            //     },
+            //   ),
+            // ),
+            // Card(
+            //   elevation: 10,
+            //   child: ListTile(
+            //     leading: Icon(Icons.calculate_rounded),
+            //     title: Text('About'),
+            //     onTap: () {
+            //       Navigator.push(
+            //         context,
+            //         MaterialPageRoute(
+            //           builder: (context) => CalcForm1(),
+            //         ),
+            //       );
+            //     },
+            //   ),
+            // ),
+          ],
         ),
       ),
     );

@@ -45,7 +45,6 @@ class _FeedbackState extends State<FeedbackForm> {
       "subject": tfSubject.text,
       "feedback": tfFeedback.text,
     });
-
     final data = jsonDecode(response.body);
     int value = data['value'];
     String message = data['message'];
@@ -53,10 +52,8 @@ class _FeedbackState extends State<FeedbackForm> {
       setState(() {
         Navigator.pop(context);
       });
-      print(message);
       feedbackToast(message);
     } else {
-      print(message);
       feedbackToast(message);
     }
   }
@@ -66,6 +63,7 @@ class _FeedbackState extends State<FeedbackForm> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
+        centerTitle: true,
         title: Text('Feedback Form'),
       ),
       backgroundColor: Color.fromRGBO(217, 217, 217, 1),

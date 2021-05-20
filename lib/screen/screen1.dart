@@ -109,7 +109,8 @@ class _CalcForm1State extends State<CalcForm1> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: Text('Screen1'),
+        centerTitle: true,
+        title: Text('Screen 1'),
         // actions: <Widget>[
         //   IconButton(
         //     onPressed: () {
