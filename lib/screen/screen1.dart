@@ -208,7 +208,7 @@ class _CalcForm1State extends State<CalcForm1> {
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
                       child: Text(
-                        'CURRENT FOR MD',
+                        'CURRENT FOR MAXIMUM DEMAND (MD)',
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ),

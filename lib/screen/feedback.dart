@@ -13,8 +13,10 @@ class FeedbackForm extends StatefulWidget {
 class _FeedbackState extends State<FeedbackForm> {
   final _key = new GlobalKey<FormState>();
 
-  final TextEditingController tfSubject = TextEditingController();
-  final TextEditingController tfFeedback = TextEditingController();
+  String subject,feedback;
+
+  // final TextEditingController tfSubject = TextEditingController();
+  // final TextEditingController tfFeedback = TextEditingController();
 
   check() {
     final form = _key.currentState;
@@ -30,21 +32,23 @@ class _FeedbackState extends State<FeedbackForm> {
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIos: 1,
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.black45,
         textColor: Colors.white);
   }
 
   save() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     final response =
-        await http.post("http://10.0.2.2/budee/save_feedback.php", headers: {
-      "Accept": "application/json"
-    }, body: {
+        await http.post("http://10.0.2.2/budee/save_feedback.php", 
+      //   headers: {
+      // "Accept": "application/json"}, 
+      body: {
       "name": preferences.getString("name"),
       "email": preferences.getString("email"),
-      "subject": tfSubject.text,
-      "feedback": tfFeedback.text,
+      "subject": subject,
+      "feedback": feedback,
     });
+
     final data = jsonDecode(response.body);
     int value = data['value'];
     String message = data['message'];
@@ -76,13 +80,13 @@ class _FeedbackState extends State<FeedbackForm> {
               Card(
                 elevation: 6.0,
                 child: TextFormField(
-                  controller: tfSubject,
-                  // validator: (e) {
-                  //   if (e.isEmpty) {
-                  //     return "Please insert Subject";
-                  //   }
-                  // },
-                  // onSaved: (e) => subject = e,
+                  // controller: tfSubject,
+                  validator: (e) {
+                    if (e.isEmpty) {
+                      return "Please insert Subject";
+                    }
+                  },
+                  onSaved: (e) => subject = e,
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 16,
@@ -105,14 +109,14 @@ class _FeedbackState extends State<FeedbackForm> {
               Card(
                 elevation: 6.0,
                 child: TextFormField(
-                  controller: tfFeedback,
+                  // controller: tfFeedback,
                   maxLines: 10,
-                  // validator: (e) {
-                  //   if (e.isEmpty) {
-                  //     return "Please insert Feedback";
-                  //   }
-                  // },
-                  // onSaved: (e) => feedback = e,
+                  validator: (e) {
+                    if (e.isEmpty) {
+                      return "Please insert Feedback";
+                    }
+                  },
+                  onSaved: (e) => feedback = e,
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 16,
@@ -150,7 +154,7 @@ class _FeedbackState extends State<FeedbackForm> {
                     shape: StadiumBorder(),
                   ),
                   onPressed: () {
-                    save();
+                    check();
                   }),
             ],
           ),

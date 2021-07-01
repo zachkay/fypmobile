@@ -25,7 +25,7 @@ class _ResultPage extends State<Screen3> {
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIos: 1,
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.black45,
         textColor: Colors.white);
   }
 
@@ -214,7 +214,7 @@ class _ResultPage extends State<Screen3> {
                                 style: TextStyle(fontWeight: FontWeight.bold))),
                             DataCell(Text(
                                 '${widget.calculationDetail.calcVdPercent.toStringAsFixed(2)}%',
-                                style: TextStyle(fontStyle: FontStyle.italic))),
+                                style: TextStyle(fontStyle: FontStyle.italic, color: widget.calculationDetail.calcVdPercent > widget.calculationDetail.allowedVD ? Colors.red : Colors.black))),
                           ],
                         ),
                         DataRow(
@@ -285,7 +285,7 @@ class _ResultPage extends State<Screen3> {
                     ElevatedButton(
                       // shape: RoundedRectangleBorder(
                       //     borderRadius: BorderRadius.circular(13.0)),
-                      child: Text("PRINT"),
+                      child: Text("DOWNLOAD/SHARE"),
                       style: ElevatedButton.styleFrom(
                         textStyle: TextStyle(
                             fontSize: 15.0,

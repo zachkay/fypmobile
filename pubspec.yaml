@@ -58,7 +58,9 @@ flutter:
   - family: OpenSans
     fonts:
       - asset: asset/fonts/OpenSans-Regular.ttf
-  
+  - family: MPLUSRounded1c
+    fonts:
+      - asset: asset/fonts/MPLUSRounded1c-Regular.ttf
 
   # To add assets to your application, add an assets section, like this:
   # assets:

@@ -14,6 +14,8 @@ class History extends StatefulWidget {
 class _HistoryState extends State<History> {
   String id = "";
 
+  List itemExpanded = [];
+
   @override
   void initState() {
     super.initState();
@@ -27,6 +29,158 @@ class _HistoryState extends State<History> {
     return json.decode(response.body);
   }
 
+  List<ExpansionPanel> listExpansionPanel(var snapshot) {
+    List<ExpansionPanel> expLst = [];
+    int count = 0;
+    snapshot.forEach((data) {
+      itemExpanded.add(false);
+      expLst.add(ExpansionPanel(
+        headerBuilder: (BuildContext context, bool isExpanded) {
+          return ListTile(
+            title: Text(data['date']),
+          );
+        },
+        body: Column(
+          children: [
+            Divider(
+              color: Colors.grey[200],
+              thickness: 2,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+              child: Container(
+                child: Column(
+                  // crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Row(
+                      children: <Widget>[                
+                      Text(
+                        data['loc_a'],
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Icon(Icons.arrow_right_alt_rounded),
+                      Text(
+                        data['loc_b'],
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ]),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    
+                    Row(children: <Widget>[
+                      Text("Est. Distance: "),
+                      Text(
+                        '${data['est_dist']}m',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ]),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Row(children: <Widget>[
+                      Text("Cable Type: "),
+                      Text(
+                        data['c_type'],
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ]),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Row(children: <Widget>[
+                      Text("Cable VD: "),
+                      Text(
+                        '${data['c_vd']}mV',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ]),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Row(children: <Widget>[
+                      Text("Cable Iz: "),
+                      Text(
+                        '${data['c_iz']}A',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ]),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Row(children: <Widget>[
+                      Text("Calculated VD: "),
+                      Text(
+                        '${data['calc_vd']}V',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ]),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Row(children: <Widget>[
+                      Text("Calculated VD: "),
+                      Text(
+                        '${data['calc_vd_percent']}%',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ]),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Row(children: <Widget>[
+                      Text("Allowed VD: "),
+                      Text(
+                        '${data['allowed_vd']}%',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ]),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Row(children: <Widget>[
+                      Text("Cable Quantity: "),
+                      Text(
+                        data['c_qty'],
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ]),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Row(children: <Widget>[
+                      Text("Cable Price: "),
+                      Text(
+                        'RM${data['c_price']}',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ]),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Row(children: <Widget>[
+                      Text("Overall Price: "),
+                      Text(
+                        'RM${data['o_price']}',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ]),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+        isExpanded: itemExpanded[count],
+      ));
+      count++;
+    });
+    return expLst;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,181 +189,27 @@ class _HistoryState extends State<History> {
         centerTitle: true,
         title: Text('Calculation History'),
       ),
-      body: Column(
-        children: [
-          SizedBox(
-            height: 10,
+      body: SingleChildScrollView(
+        child: Container(
+          child: FutureBuilder(
+            future: getHistory(),
+            builder: (context, snapshot) {
+              if (snapshot.hasError) print(snapshot.error);
+              return snapshot.hasData
+                  ? ExpansionPanelList(
+                    animationDuration: Duration(milliseconds: 750),
+                    expandedHeaderPadding: EdgeInsets.only(bottom: 0),
+                      expansionCallback: (int index, bool isExpanded) {
+                        setState(() {
+                          itemExpanded[index] = !isExpanded;
+                        });
+                      },
+                      children: listExpansionPanel(snapshot.data),
+                    )
+                  : CircularProgressIndicator();
+            },
           ),
-          Expanded(
-            child: FutureBuilder(
-              future: getHistory(),
-              builder: (context, snapshot) {
-                if (snapshot.hasError) print(snapshot.error);
-                return snapshot.hasData
-                    ? ListView.builder(
-                        itemCount: snapshot.data.length,
-                        itemBuilder: (context, index) {
-                          List list = snapshot.data;
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 15, vertical: 10),
-                            child: Card(
-                              elevation: 8,
-                              child: ListTile(
-                                isThreeLine: true,
-                                leading: Text(list[index]['date']),
-                                subtitle: Padding(
-                                  padding: const EdgeInsets.fromLTRB(
-                                      5.0, 10.0, 0.0, 10.0),
-                                  child: Column(
-                                    children: <Widget>[
-                                      Row(children: <Widget>[
-                                        Text("From: "),
-                                        Text(
-                                          list[index]['loc_a'],
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ]),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                      Row(children: <Widget>[
-                                        Text("To: "),
-                                        Text(
-                                          list[index]['loc_b'],
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ]),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                      Row(children: <Widget>[
-                                        Text("Est. Distance: "),
-                                        Text(
-                                          list[index]['est_dist'],
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ]),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                      Row(children: <Widget>[
-                                        Text("Cable Type: "),
-                                        Text(
-                                          list[index]['c_type'],
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ]),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                      Row(children: <Widget>[
-                                        Text("Cable VD: "),
-                                        Text(
-                                          list[index]['c_vd'],
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ]),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                      Row(children: <Widget>[
-                                        Text("Cable Iz: "),
-                                        Text(
-                                          list[index]['c_iz'],
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ]),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                      Row(children: <Widget>[
-                                        Text("Calculated VD: "),
-                                        Text(
-                                          list[index]['calc_vd'],
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold
-                                          ),
-                                        ),
-                                      ]),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                      Row(children: <Widget>[
-                                        Text("Calculated VD %: "),
-                                        Text(
-                                          list[index]['calc_vd_percent'],
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold
-                                          ),
-                                        ),
-                                      ]),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                      Row(children: <Widget>[
-                                        Text("Allowed VD: "),
-                                        Text(
-                                          list[index]['allowed_vd'],
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold
-                                          ),
-                                        ),
-                                      ]),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                      Row(children: <Widget>[
-                                        Text("Cable Quantity: "),
-                                        Text(
-                                          list[index]['c_qty'],
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold
-                                          ),
-                                        ),
-                                      ]),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                      Row(children: <Widget>[
-                                        Text("Cable Price: "),
-                                        Text(
-                                          list[index]['c_price'],
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold
-                                          ),
-                                        ),
-                                      ]),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                      Row(children: <Widget>[
-                                        Text("Overall Price: "),
-                                        Text(
-                                          list[index]['o_price'],
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold
-                                          ),
-                                        ),
-                                      ]),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          );
-                        })
-                    : CircularProgressIndicator();
-              },
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

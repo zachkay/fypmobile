@@ -124,8 +124,8 @@ class _MainMenuState extends State<MainMenu> {
             //   },
             // ),
             ListTile(
-              leading: Icon(Icons.calculate_rounded),
-              title: Text('Calculator'),
+              leading: Icon(Icons.cable_rounded),
+              title: Text('Calculate Voltage Drop'),
               onTap: () {
                 Navigator.push(
                   context,
@@ -137,7 +137,7 @@ class _MainMenuState extends State<MainMenu> {
             ),
             ListTile(
               leading: Icon(Icons.history_rounded),
-              title: Text('History'),
+              title: Text('Calculation History'),
               onTap: () {
                 Navigator.push(
                   context,
@@ -156,7 +156,7 @@ class _MainMenuState extends State<MainMenu> {
 
             ListTile(
               leading: Icon(Icons.feedback_rounded),
-              title: Text('Feedback'),
+              title: Text('Give Feedback'),
               onTap: () {
                 Navigator.push(
                   context,
@@ -169,7 +169,7 @@ class _MainMenuState extends State<MainMenu> {
 
             ListTile(
               leading: Icon(Icons.info_outline_rounded),
-              title: Text('About'),
+              title: Text('About Application'),
               onTap: () {
                 Navigator.push(
                   context,
@@ -226,7 +226,7 @@ class _MainMenuState extends State<MainMenu> {
                               children: <Widget>[
                                 IconButton(
                                   padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                                  icon: Icon(Icons.calculate_rounded),
+                                  icon: Icon(Icons.cable_rounded),
                                   iconSize: 90,
                                   color: Colors.amberAccent,
                                   onPressed: () {
@@ -240,7 +240,7 @@ class _MainMenuState extends State<MainMenu> {
                                 ),
                                 TextButton(
                                   child: Text(
-                                    "Calculator",
+                                    "Calculate VD",
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
@@ -332,7 +332,7 @@ class _MainMenuState extends State<MainMenu> {
                               ),
                               TextButton(
                                 child: Text(
-                                  "About",
+                                  "About App",
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,

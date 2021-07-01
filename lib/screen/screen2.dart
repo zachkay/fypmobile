@@ -254,7 +254,7 @@ class _CalcForm2State extends State<CalcForm2> {
                   ),
                   TextFormField(
                     decoration: InputDecoration(
-                      labelText: 'Voltage Drop Allowed',
+                      labelText: 'Voltage Drop Allowed (%)',
                       // icon: Icon(Icons.location_on),
                     ),
                     controller: tfAllowedVD,

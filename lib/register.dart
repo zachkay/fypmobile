@@ -65,7 +65,7 @@ class _RegisterState extends State<Register> {
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIos: 1,
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.black45,
         textColor: Colors.white);
   }
 
