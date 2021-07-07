@@ -90,7 +90,7 @@ class _MainMenuState extends State<MainMenu> {
                     height: 10.0,
                   ),
                   Text(
-                    "Hi, " + name,
+                    "Hi, " + name + "!",
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 20.0,

@@ -183,6 +183,11 @@ class _RegisterState extends State<Register> {
                       Card(
                         elevation: 6.0,
                         child: TextFormField(
+                          validator: (e) {
+                                if (e.isEmpty) {
+                                  return "Password Can't be Empty";
+                                }
+                              },
                           obscureText: _secureText,
                           onSaved: (e) => password = e,
                           style: TextStyle(

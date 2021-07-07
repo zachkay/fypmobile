@@ -339,6 +339,7 @@ class _CalcForm2State extends State<CalcForm2> {
                     onChanged: (val) {
                       setState(() {
                         cableQty = val;
+                        // calcVd(val);
                       });
                     },
                     validator: (val) => val == null

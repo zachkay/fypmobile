@@ -14,7 +14,7 @@ class _AboutState extends State<About> {
       appBar: AppBar(
         backgroundColor: Colors.black,
         centerTitle: true,
-        title: Text('About Page'),
+        title: Text('About Application'),
       ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(30.0,20.0,30.0,0.0),
